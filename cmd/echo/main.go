@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	http.ListenAndServe(":5050", http.HandlerFunc(
+	http.ListenAndServe(":8080", http.HandlerFunc(
 		func(w http.ResponseWriter, req *http.Request) {
 			body, err := ioutil.ReadAll(req.Body)
 			if err != nil {

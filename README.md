@@ -70,3 +70,11 @@ FAIL
 
 ```
 
+# Test with Knative Serving
+
+```
+# export your cluster entrypoint, bellow is the expossed ingress url from a minikube cluster
+export INGRESS_URL=http://192.168.39.97:30765
+export REQUEST_HOST=helloworld-go.default.example.com
+for i in {1..10}; do go clean -cache; go test -v -run TestProxyBehindEnvoy ./pkg/rp/...; done
+```

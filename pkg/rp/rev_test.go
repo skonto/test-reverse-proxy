@@ -113,11 +113,6 @@ func TestProxyEchoOKWithChainHandler(t *testing.T) {
 	proxy := NewHeaderPruningReverseProxy(echoURL.Host, "", []string{}, false)
 	proxy.FlushInterval = 0
 	proxyWithMiddleware := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		//rc := http.NewResponseController(w)
-		//err = rc.EnableFullDuplex()
-		//if err != nil {
-		//	fmt.Printf("ERROR1:%v\n", err)
-		//}
 		proxy.ServeHTTP(w, r)
 	})
 
@@ -126,11 +121,11 @@ func TestProxyEchoOKWithChainHandler(t *testing.T) {
 	})
 
 	composedHandler2 := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		//rc := http.NewResponseController(w)
-		//err = rc.EnableFullDuplex()
-		//if err != nil {
-		//	fmt.Printf("ERROR2:%v\n", err)
-		//}
+		rc := http.NewResponseController(w)
+		err = rc.EnableFullDuplex()
+		if err != nil {
+			fmt.Printf("ERROR2:%v\n", err)
+		}
 		composedHandler.ServeHTTP(w, r)
 	})
 
@@ -193,8 +188,6 @@ func TestProxyEchoFailWithChainHandler(t *testing.T) {
 	proxy := NewHeaderPruningReverseProxy(echoURL.Host, "", []string{}, false)
 	proxy.FlushInterval = 0
 	proxyWithMiddleware := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		rc := http.NewResponseController(w)
-		_ = rc.EnableFullDuplex()
 		proxy.ServeHTTP(w, r)
 	})
 
